@@ -1,0 +1,25 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "Exercises from part3 - fullstackopen course by University of Helsinky",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rjeantet/fullstackopen-3.git"
+  },
+  "author": "Rose Jeantet",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rjeantet/fullstackopen-3/issues"
+  },
+  "homepage": "https://github.com/rjeantet/fullstackopen-3#readme",
+  "dependencies": {
+    "express": "^4.18.2",
+    "nodemon": "^3.0.1"
+  }
+}
