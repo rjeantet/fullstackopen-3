@@ -1,0 +1,17 @@
+.message {
+  font-size: 18px;
+  border-style: solid;
+  border-radius: 5px;
+  padding: 10px;
+  margin: 10px auto;
+}
+
+.feedback {
+  color: rgb(0, 75, 128);
+  background-color: rgb(246 251 255);
+}
+
+.error {
+  color: rgb(128, 0, 0);
+  background-color: rgb(227, 152, 152);
+}

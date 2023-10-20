@@ -1,11 +1,14 @@
 const express = require('express');
 const app = express();
 const morgan = require('morgan');
+const cors = require('cors');
 
 app.use(express.json());
 app.use(morgan('tiny'));
 
 morgan.token('body', (req, res) => JSON.stringify(req.body));
+
+app.use(cors());
 
 app.use(
   morgan(
@@ -64,6 +67,22 @@ app.get('/api/persons/:id', (request, response) => {
   } else {
     response.status(404).end();
   }
+});
+
+app.put('/api/persons/:id', (request, response) => {
+  const body = request.body;
+
+  const person = {
+    name: body.name,
+    number: body.number,
+    id: body.id,
+  };
+
+  persons = persons.map((person) =>
+    person.id === body.id ? { ...person, number: body.number } : person
+  );
+
+  response.json(person);
 });
 
 const generateId = () => {
