@@ -22,3 +22,7 @@ For each, navigate to the appropriate folder (client and server) and run:
 ```
 npm run dev
 ```
+
+## Check the deployed app on:
+
+https://phonebook-fso-lv2w.onrender.com/
