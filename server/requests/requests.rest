@@ -1,11 +1,11 @@
-DELETE https://phonebook-fso-lv2w.onrender.com/api/persons/2 HTTP/1.1" 200 0 
+DELETE https://phonebook-fso-lv2w.onrender.com/api/people/2 HTTP/1.1" 200 0 
 
 ###
 
-GET https://phonebook-fso-lv2w.onrender.com/api/persons HTTP/1.1 200 0
+GET https://phonebook-fso-lv2w.onrender.com/api/people HTTP/1.1 200 0
 
 ###
-POST https://phonebook-fso-lv2w.onrender.com/api/persons HTTP/1.1
+POST https://phonebook-fso-lv2w.onrender.com/api/people HTTP/1.1
 Content-Type: application/json
 
 {
@@ -13,3 +13,28 @@ Content-Type: application/json
     "number": "040-123457"
 }
 
+### 
+
+GET http://localhost:3001/api/people/ HTTP/1.1 200 0
+
+###
+
+PUT http://localhost:3001/api/people/6537b407874873467fb280eb HTTP/1.1
+Content-Type: application/json
+
+{
+    "name": "Jo Doe",
+    "number": "00-123457"
+}
+
+###
+POST http://localhost:3001/api/people HTTP/1.1
+Content-Type: application/json
+
+{
+    "name": "Johnny Doe",
+    "number": "041-123457"
+}
+
+### 
+DELETE http://localhost:3001/api/people/6537b407874873467fb280eb HTTP/1.1" 200 0 

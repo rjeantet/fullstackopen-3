@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import personService from './services/persons';
+import personService from './services/people';
 import Filter from './components/Filter';
 import PersonForm from './components/PersonForm';
 import Persons from './components/Persons';
@@ -25,7 +25,6 @@ const App = () => {
   const addPerson = (event) => {
     event.preventDefault();
     const personObject = {
-      id: persons.length + 1,
       name: newName,
       number: newNumber,
     };

@@ -3,6 +3,8 @@ const app = express();
 const morgan = require('morgan');
 const cors = require('cors');
 
+const Person = require('./models/person');
+
 app.use(express.static('dist'));
 app.use(express.json());
 app.use(morgan('tiny'));
@@ -20,107 +22,89 @@ app.use(
   )
 );
 
-let persons = [
-  {
-    id: 1,
-    name: 'Arto Hellas',
-    number: '040-123456',
-  },
-  {
-    id: 2,
-    name: 'Ada Lovelace',
-    number: '39-44-5323523',
-  },
-  {
-    id: 3,
-    name: 'Dan Abramov',
-    number: '12-43-234345',
-  },
-  {
-    id: 4,
-    name: 'Mary Poppendieck',
-    number: '39-23-6423122',
-  },
-];
-
 app.get('/', (request, response) => {
   response.send('<h1>Hello World!</h1>');
 });
 
+//[x]: tested ok
 app.get('/info', (request, response) => {
   const date = new Date();
-  response.send(
-    `<p>Phonebook has info for ${persons.length} people</p>
+  Person.find({}).then((people) => {
+    response.send(
+      `<p>Phonebook has info for ${people.length} people</p>
     <p>${date}</p>`
-  );
+    );
+  });
 });
 
-app.get('/api/persons', (request, response) => {
-  response.json(persons);
+//[x]: tested ok
+app.get('/api/people', (request, response) => {
+  Person.find({}).then((people) => {
+    response.json(people);
+    console.log(people);
+  });
 });
 
-app.get('/api/persons/:id', (request, response) => {
-  const id = Number(request.params.id);
-  const person = persons.find((person) => person.id === id);
-
-  if (person) {
-    response.json(person);
-  } else {
-    response.status(404).end();
-  }
+//[x]: tested ok
+app.get('/api/people/:id', (request, response) => {
+  Person.findById(request.params.id).then((person) => {
+    if (person) {
+      response.json(person);
+    } else {
+      response.status(404).end();
+    }
+  });
 });
 
-app.put('/api/persons/:id', (request, response) => {
+//[x]: tested ok
+app.put('/api/people/:id', (request, response) => {
   const body = request.body;
-
   const person = {
     name: body.name,
     number: body.number,
-    id: body.id,
   };
-
-  persons = persons.map((person) =>
-    person.id === body.id ? { ...person, number: body.number } : person
-  );
-
-  response.json(person);
+  Person.findByIdAndUpdate(request.params.id, person, { new: true })
+    .then((updatedPerson) => {
+      response.json(updatedPerson);
+    })
+    .catch((error) => next(error));
 });
 
-const generateId = () => {
-  const randomId = Math.floor(Math.random() * 1000000);
-  return randomId;
-};
-
-app.post('/api/persons', (request, response) => {
+//[x]: tested ok
+app.post('/api/people', (request, response) => {
   const body = request.body;
-  if (!body.name) {
-    return response.status(400).json({ error: 'name missing' });
-  }
-  if (!body.number) {
-    return response.status(400).json({ error: 'number missing' });
-  }
-  if (persons.some((person) => person.name === body.name)) {
-    return response.status(400).json({
-      error: 'check the name or number for missing or duplicate values',
+  Person.find({}).then((people) => {
+    if (!body.name) {
+      return response.status(400).json({ error: 'name missing' });
+    }
+    if (!body.number) {
+      return response.status(400).json({ error: 'number missing' });
+    }
+    if (people.some((person) => person.name === body.name)) {
+      return response.status(400).json({
+        error: 'check the name or number for missing or duplicate values',
+      });
+    }
+
+    const person = new Person({
+      name: body.name,
+      number: body.number,
     });
-  }
 
-  const person = {
-    name: body.name,
-    number: body.number,
-    id: generateId(),
-  };
-
-  persons = persons.concat(person);
-
-  response.json(person);
+    person.save().then((person) => {
+      response.json(person);
+    });
+  });
 });
 
-app.delete('/api/persons/:id', (request, response) => {
-  const id = Number(request.params.id);
-  persons = persons.filter((person) => person.id !== id);
-
-  response.status(204).end();
+//[x]: tested ok
+app.delete('/api/people/:id', (request, response) => {
+  const body = request.body;
+  Person.findByIdAndDelete(request.params.id, body)
+    .then((person) => {
+      response.json(person);
+    })
+    .catch((error) => next(error));
 });
 
 const unknownEndpoint = (request, response) => {
