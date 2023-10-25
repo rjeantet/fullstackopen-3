@@ -78,13 +78,22 @@ const App = () => {
 
     // If not in phonebook, add new person and post to server
     else {
-      setPersons([...persons, personObject]);
-      personService.create(personObject).then((response) => {
-        console.log('New person added:', response.data);
-      });
+      personService
+        .create(personObject)
+        .then((response) => {
+          setPersons([...persons, personObject]);
+
+          console.log('New person added:', response.data);
+          setNewName('');
+          setNewNumber('');
+        })
+        .catch((error) => {
+          setErrorMessage(error.response.data.error);
+          setTimeout(() => {
+            setErrorMessage(null);
+          }, 5000);
+        });
     }
-    setNewName('');
-    setNewNumber('');
   };
 
   const handleNameChange = (event) => {
