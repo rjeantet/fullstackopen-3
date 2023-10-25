@@ -35,7 +35,7 @@ if (process.argv.length < 4) {
   });
 } else {
   // Add new entry to database
-  person.save().then((result) => {
+  person.save().then(() => {
     console.log(`added ${person.name} number ${person.number} to phonebook`);
     mongoose.connection.close();
   });
